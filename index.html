@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    input {
+      padding: 12px;
+      width: 300px;
+      font-size: 16px;
+      margin-top: 20px;
+
+      border: none;
+      border-radius: 8px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 20px;
+
+      background: white;
+      color: black;
+
+      border: none;
+      border-radius: 8px;
+
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #cccccc;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Passwort eingeben</h1>
+
+  <input type="password" id="passwordInput" placeholder="Passwort">
+
+  <button onclick="checkPassword()">Öffnen</button>
+
+  <script>
+    function checkPassword() {
+
+      const correctPassword = "liebiskusloki1782blau0.3105samstagseoul";
+
+      const enteredPassword =
+        document.getElementById("passwordInput").value;
+
+      if (enteredPassword === correctPassword) {
+        window.location.href = "codes.html";
+      } else {
+        alert("Falsches Passwort");
+      }
+    }
+  </script>
+
+</body>
+</html>
