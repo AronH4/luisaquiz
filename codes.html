@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Codes</title>
+
+  <style>
+
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .container {
+      display: grid;
+
+      grid-template-columns: repeat(2, 1fr);
+
+      gap: 40px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .qr-box {
+      background-color: #111;
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    .qr-box img {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>QR Codes</h1>
+
+  <div class="container">
+
+    <div class="qr-box">
+      <h2>1</h2>
+      <img src="qr1.png" alt="QR 1">
+    </div>
+
+    <div class="qr-box">
+      <h2>2</h2>
+      <img src="qr2.png" alt="QR 2">
+    </div>
+
+    <div class="qr-box">
+      <h2>3</h2>
+      <img src="qr3.png" alt="QR 3">
+    </div>
+
+    <div class="qr-box">
+      <h2>4</h2>
+      <img src="qr4.png" alt="QR 4">
+    </div>
+
+  </div>
+
+</body>
+</html>
