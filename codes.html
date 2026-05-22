@@ -30,7 +30,7 @@
 
       font-size: 48px;
 
-      margin-bottom: 40px;
+      margin-bottom: 30px;
 
       color: #00ff66;
 
@@ -76,6 +76,42 @@
       border-radius: 10px;
     }
 
+    #voiceButton {
+
+      margin-top: 50px;
+
+      padding: 15px 30px;
+
+      background: black;
+      color: #00ff66;
+
+      border: 2px solid #00ff66;
+
+      border-radius: 10px;
+
+      font-size: 18px;
+
+      font-family: "Courier New", monospace;
+
+      cursor: pointer;
+
+      box-shadow: 0 0 15px #00ff66;
+    }
+
+    #voiceButton:hover {
+      background: #00ff66;
+      color: black;
+    }
+
+    #status {
+
+      margin-top: 20px;
+
+      font-size: 18px;
+
+      min-height: 30px;
+    }
+
   </style>
 </head>
 <body>
@@ -83,7 +119,7 @@
   <h1>QR ACCESS</h1>
 
   <div id="timer">
-    01:00
+    04:00
   </div>
 
   <div class="container">
@@ -110,9 +146,21 @@
 
   </div>
 
+  <button id="voiceButton" onclick="startVoiceRecognition()">
+    START VOICE CHECK
+  </button>
+
+  <div id="status"></div>
+
+  <audio id="successAudio" src="audio.mp3"></audio>
+
   <script>
 
-    let timeLeft = 60;
+    // -------------------------
+    // TIMER
+    // -------------------------
+
+    let timeLeft = 240;
 
     const timerElement =
       document.getElementById("timer");
@@ -142,6 +190,77 @@
       }
 
     }, 1000);
+
+    // -------------------------
+    // VOICE RECOGNITION
+    // -------------------------
+
+    function startVoiceRecognition() {
+
+      const status =
+        document.getElementById("status");
+
+      status.innerHTML = "LISTENING...";
+
+      const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+      if (!SpeechRecognition) {
+
+        status.innerHTML =
+          "VOICE RECOGNITION NOT SUPPORTED";
+
+        return;
+      }
+
+      const recognition =
+        new SpeechRecognition();
+
+      recognition.lang = "de-DE";
+
+      recognition.start();
+
+      // Nach 8 Sekunden stoppen
+      setTimeout(() => {
+        recognition.stop();
+      }, 8000);
+
+      recognition.onresult = function(event) {
+
+        const spokenText =
+          event.results[0][0].transcript
+          .toLowerCase()
+          .trim();
+
+        console.log(spokenText);
+
+        if (spokenText === "ich liebe dich") {
+
+          status.innerHTML =
+            "ACCESS GRANTED";
+
+          document
+            .getElementById("successAudio")
+            .play();
+
+        } else {
+
+          status.innerHTML =
+            "ACCESS DENIED";
+
+        }
+
+      };
+
+      recognition.onerror = function() {
+
+        status.innerHTML =
+          "VOICE ERROR";
+
+      };
+
+    }
 
   </script>
 
