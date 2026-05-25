@@ -80,45 +80,13 @@
     }
 
     .shake {
-      animation: shake 1.45s ease;
-    }
-
-    /* Glitch Text */
-    #glitchText {
-      font-size: 22px;
-      margin-top: 15px;
-      color: #ff0033;
-      text-shadow: 0 0 8px #ff0033;
-      font-family: "Courier New", monospace;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    @keyframes glitch {
-      0% { opacity: 1; transform: translate(0); }
-      20% { transform: translate(-2px, 2px); }
-      40% { transform: translate(2px, -2px); }
-      60% { transform: translate(-2px, -1px); }
-      80% { transform: translate(1px, 2px); }
-      100% { opacity: 0; transform: translate(0); }
-    }
-
-    .glitch-animate {
-      display: block;
-      animation: glitch 1.45s linear;
+      animation: shake 0.4s ease;
     }
   </style>
 </head>
 <body>
 
   <h1>ACCESS TERMINAL</h1>
-
-  <!-- Glitch Text -->
-  <div id="glitchText" class="hidden">ACCESS DENIED</div>
 
   <input
     type="password"
@@ -136,7 +104,6 @@
     const body = document.body;
     const passwordInput = document.getElementById("passwordInput");
     const errorSound = document.getElementById("errorSound");
-    const glitch = document.getElementById("glitchText");
 
     function checkPassword() {
       const correctPassword = "liebiskusloki1782blau0.3105samstagseoul";
@@ -150,36 +117,27 @@
     }
 
     function triggerErrorEffect() {
-      // Sound
+      // Sound abspielen
       errorSound.currentTime = 0;
       errorSound.play();
 
-      // Rotfärbung
+      // Fehlerzustand aktivieren
       body.classList.add("error-state");
 
-      // Input leeren + Fokus
+      // Input leeren und Fokus setzen
       passwordInput.value = "";
       passwordInput.focus();
 
-      // Shake
+      // Shake-Effekt
       passwordInput.classList.add("shake");
 
-      // Glitch anzeigen
-      glitch.classList.remove("hidden");
-      glitch.classList.add("glitch-animate");
-
-      // Reset nach 0.5s
+      // Nach kurzer Zeit wieder zurücksetzen
       setTimeout(() => {
         passwordInput.classList.remove("shake");
         body.classList.remove("error-state");
-
-        glitch.classList.add("hidden");
-        glitch.classList.remove("glitch-animate");
-
       }, 500);
     }
 
-    // Enter-Taste
     passwordInput.addEventListener("keypress", function(event) {
       if (event.key === "Enter") {
         checkPassword();
@@ -189,5 +147,4 @@
 
 </body>
 </html>
-
 
