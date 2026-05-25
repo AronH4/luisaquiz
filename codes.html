@@ -195,72 +195,124 @@
     // VOICE RECOGNITION
     // -------------------------
 
-    function startVoiceRecognition() {
+let recognitionRunning = false;
 
-      const status =
-        document.getElementById("status");
+function startVoiceRecognition() {
 
-      status.innerHTML = "LISTENING...";
+  if (recognitionRunning) {
+    return;
+  }
 
-      const SpeechRecognition =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
+  recognitionRunning = true;
 
-      if (!SpeechRecognition) {
+  const status =
+    document.getElementById("status");
+
+  status.innerHTML = "LISTENING...";
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+
+    status.innerHTML =
+      "VOICE RECOGNITION NOT SUPPORTED";
+
+    recognitionRunning = false;
+
+    return;
+  }
+
+  const recognition =
+    new SpeechRecognition();
+
+  recognition.lang = "de-DE";
+
+  recognition.continuous = false;
+
+  recognition.interimResults = false;
+
+  let recognizedText = "";
+
+  recognition.start();
+
+  // Automatisch nach 8 Sekunden stoppen
+  const stopTimer = setTimeout(() => {
+
+    recognition.stop();
+
+  }, 8000);
+
+  recognition.onresult = function(event) {
+
+    recognizedText =
+      event.results[0][0].transcript
+      .toLowerCase()
+      .trim();
+
+    console.log("Erkannt:", recognizedText);
+
+    if (
+      recognizedText.includes("ich liebe dich")
+    ) {
+
+      status.innerHTML =
+        "ACCESS GRANTED";
+
+      const audio =
+        document.getElementById("successAudio");
+
+      audio.currentTime = 0;
+
+      audio.play().catch(function(error) {
+
+        console.log("Audio Fehler:", error);
 
         status.innerHTML =
-          "VOICE RECOGNITION NOT SUPPORTED";
+          "AUDIO BLOCKED";
 
-        return;
-      }
+      });
 
-      const recognition =
-        new SpeechRecognition();
+    } else {
 
-      recognition.lang = "de-DE";
-
-      recognition.start();
-
-      // Nach 8 Sekunden stoppen
-      setTimeout(() => {
-        recognition.stop();
-      }, 8000);
-
-      recognition.onresult = function(event) {
-
-        const spokenText =
-          event.results[0][0].transcript
-          .toLowerCase()
-          .trim();
-
-        console.log(spokenText);
-
-        if (spokenText === "ich liebe dich") {
-
-          status.innerHTML =
-            "ACCESS GRANTED";
-
-          document
-            .getElementById("successAudio")
-            .play();
-
-        } else {
-
-          status.innerHTML =
-            "ACCESS DENIED";
-
-        }
-
-      };
-
-      recognition.onerror = function() {
-
-        status.innerHTML =
-          "VOICE ERROR";
-
-      };
-
+      status.innerHTML =
+        "ACCESS DENIED";
     }
+
+  };
+
+  // Wenn Sprache endet
+  recognition.onspeechend = function() {
+
+    recognition.stop();
+  };
+
+  // Wenn Recognition komplett endet
+  recognition.onend = function() {
+
+    clearTimeout(stopTimer);
+
+    if (recognizedText === "") {
+
+      status.innerHTML =
+        "NO VOICE DETECTED";
+    }
+
+    recognitionRunning = false;
+  };
+
+  recognition.onerror = function(event) {
+
+    console.log(event.error);
+
+    status.innerHTML =
+      "VOICE ERROR: " + event.error;
+
+    recognitionRunning = false;
+  };
+
+}
 
   </script>
 
