@@ -88,7 +88,7 @@
   <button onclick="checkPassword()">
     ENTER
   </button>
-
+<audio id="errorSound" src="error.mp3"></audio>
   <script>
 
     function checkPassword() {
@@ -105,7 +105,11 @@
 
       } else {
 
-        alert("ACCESS DENIED");
+        document
+  .getElementById("errorSound")
+  .play();
+
+alert("ACCESS DENIED");
 
       }
     }
