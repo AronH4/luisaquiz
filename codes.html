@@ -265,14 +265,23 @@ function startVoiceRecognition() {
 
       audio.currentTime = 0;
 
-      audio.play().catch(function(error) {
+      audio.play()
+.then(() => {
 
-        console.log("Audio Fehler:", error);
+  audio.onended = function() {
 
-        status.innerHTML =
-          "AUDIO BLOCKED";
+    window.location.href = "love.html";
+  };
 
-      });
+})
+.catch(function(error) {
+
+  console.log("Audio Fehler:", error);
+
+  status.innerHTML =
+    "AUDIO BLOCKED";
+
+});
 
     } else {
 
