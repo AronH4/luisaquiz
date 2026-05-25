@@ -7,21 +7,16 @@
   <title>Access Terminal</title>
 
   <style>
-
     body {
       margin: 0;
       background-color: black;
       color: #00ff66;
-
       font-family: "Courier New", monospace;
-
       display: flex;
       justify-content: center;
       align-items: center;
-
       height: 100vh;
       flex-direction: column;
-
       text-shadow: 0 0 8px #00ff66;
     }
 
@@ -33,38 +28,26 @@
     input {
       padding: 12px;
       width: 320px;
-
       background: black;
       color: #00ff66;
-
       border: 2px solid #00ff66;
       border-radius: 8px;
-
       font-size: 16px;
       font-family: "Courier New", monospace;
-
       outline: none;
-
       box-shadow: 0 0 10px #00ff66;
     }
 
     button {
-
       margin-top: 20px;
-
       padding: 12px 25px;
-
       background: black;
       color: #00ff66;
-
       border: 2px solid #00ff66;
       border-radius: 8px;
-
       font-size: 16px;
       font-family: "Courier New", monospace;
-
       cursor: pointer;
-
       box-shadow: 0 0 10px #00ff66;
     }
 
@@ -73,6 +56,32 @@
       color: black;
     }
 
+    /* Fehlerzustand: alles wird rot */
+    body.error-state {
+      color: #ff0033;
+      text-shadow: 0 0 8px #ff0033;
+    }
+
+    body.error-state input,
+    body.error-state button {
+      border-color: #ff0033;
+      color: #ff0033;
+      box-shadow: 0 0 10px #ff0033;
+    }
+
+    /* Shake-Animation */
+    @keyframes shake {
+      0%   { transform: translateX(0); }
+      20%  { transform: translateX(-8px); }
+      40%  { transform: translateX(8px); }
+      60%  { transform: translateX(-8px); }
+      80%  { transform: translateX(8px); }
+      100% { transform: translateX(0); }
+    }
+
+    .shake {
+      animation: shake 0.4s ease;
+    }
   </style>
 </head>
 <body>
@@ -88,43 +97,54 @@
   <button onclick="checkPassword()">
     ENTER
   </button>
-<audio id="errorSound" src="error.mp3"></audio>
+
+  <audio id="errorSound" src="error.mp3"></audio>
+
   <script>
+    const body = document.body;
+    const passwordInput = document.getElementById("passwordInput");
+    const errorSound = document.getElementById("errorSound");
 
     function checkPassword() {
-
-      const correctPassword =
-        "liebiskusloki1782blau0.3105samstagseoul";
-
-      const enteredPassword =
-        document.getElementById("passwordInput").value;
+      const correctPassword = "liebiskusloki1782blau0.3105samstagseoul";
+      const enteredPassword = passwordInput.value;
 
       if (enteredPassword === correctPassword) {
-
         window.location.href = "codes.html";
-
       } else {
-
-        document
-  .getElementById("errorSound")
-  .play();
-
-alert("ACCESS DENIED");
-
+        triggerErrorEffect();
       }
     }
 
-    document
-      .getElementById("passwordInput")
-      .addEventListener("keypress", function(event) {
+    function triggerErrorEffect() {
+      // Sound abspielen
+      errorSound.currentTime = 0;
+      errorSound.play();
 
-        if (event.key === "Enter") {
-          checkPassword();
-        }
+      // Fehlerzustand aktivieren
+      body.classList.add("error-state");
 
-      });
+      // Input leeren und Fokus setzen
+      passwordInput.value = "";
+      passwordInput.focus();
 
+      // Shake-Effekt
+      passwordInput.classList.add("shake");
+
+      // Nach kurzer Zeit wieder zurücksetzen
+      setTimeout(() => {
+        passwordInput.classList.remove("shake");
+        body.classList.remove("error-state");
+      }, 500);
+    }
+
+    passwordInput.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        checkPassword();
+      }
+    });
   </script>
 
 </body>
 </html>
+
